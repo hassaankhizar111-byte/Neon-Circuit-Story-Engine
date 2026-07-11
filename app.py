@@ -1,3 +1,5 @@
+import os
+
 import streamlit as st
 from story_engine import StoryEngine
 
@@ -7,6 +9,93 @@ st.set_page_config(
     page_icon="🏎️",
     layout="centered"
 )
+
+import base64
+
+def add_bg_image():
+    image_path = os.path.join(os.path.dirname(__file__), "background.png")
+
+    with open(image_path, "rb") as image_file:
+        encoded = base64.b64encode(image_file.read()).decode()
+
+    st.markdown(
+        f"""
+        <style>
+
+        /* Background */
+        .stApp {{
+            background: linear-gradient(
+                rgba(10,10,15,0.65),
+                rgba(10,10,15,0.65)
+            ),
+            url("data:image/png;base64,{encoded}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }}
+
+        /* Transparent header */
+        [data-testid="stHeader"] {{
+            background: transparent;
+        }}
+
+        /* Main container */
+        [data-testid="stAppViewContainer"] {{
+            background: transparent;
+        }}
+
+        /* Title */
+        h1 {{
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff,
+                         0 0 20px #00ffff;
+            font-family: "Courier New", monospace;
+        }}
+
+        /* Subtitle */
+        p {{
+            color: #e8e8e8;
+        }}
+
+        /* Text inputs */
+        .stTextInput input {{
+            background-color: rgba(15,20,30,0.80);
+            color: #00ffff;
+            border: 1px solid #00ffff;
+            border-radius: 8px;
+        }}
+
+        /* Buttons */
+        .stButton button {{
+            background-color: rgba(15,20,30,0.85);
+            color: #00ffff;
+            border: 1px solid #00ffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #00ffff;
+        }}
+
+        .stButton button:hover {{
+            box-shadow: 0 0 20px #00ffff;
+            color: white;
+        }}
+
+        /* Expanders */
+        .streamlit-expanderHeader {{
+            color: #00ffff;
+        }}
+
+        /* Divider */
+        hr {{
+            border-color: rgba(0,255,255,0.25);
+        }}
+
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+add_bg_image()
 
 # Initialize session state
 if "story_history" not in st.session_state:
